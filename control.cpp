@@ -179,14 +179,38 @@ int main() {
             cout << "Enter base: ";
             cin >> b;
 
+	    while((b<b1.minBase)|(b>b1.maxBase)) {
+		cout << "Base value must be between " << b1.minBase << " and " << b1.maxBase << endl;
+		cout << "Please enter another value" << endl;
+		cin >> b;
+	    }
+
             cout << "Enter shoulder: ";
             cin >> s;
+
+	    while((s<s1.minShou)|(s>s1.maxShou)) {
+		cout << "Shoulder value must be between " << s1.minShou << " and " << s1.maxShou << endl;
+		cout << "Please enter another value" << endl;
+		cin >> s;
+	    }
 
             cout << "Enter elbow: ";
             cin >> e;
 
+	    while((e<e1.minElbow)|(e>e1.maxElbow)) {
+		cout << "Elbow value must be between " << e1.minElbow << " and " << e1.maxElbow << endl;
+		cout << "Please enter another value" << endl;
+		cin >> e;
+	    }
+
             cout << "Enter grip: ";
             cin >> g;
+	    
+	    while((g<g1.minGrip)|(g>g1.maxGrip)) {
+		cout << "Grip value must be between " << g1.minGrip << " and " << g1.maxGrip << endl;
+		cout << "Please enter another value" << endl;
+		cin >> g;
+	    }
 
             setBasePosition(b1,b);
             setShouPosition(s1,s);
