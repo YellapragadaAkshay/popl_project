@@ -6,6 +6,8 @@ using namespace std;
 
 string command;
 
+// some useful control functions
+
 void recordArmPosition(Base &b1, Grip &g1, Shoulder &s1, Elbow &e1)
 {
     // for recording different arm positions to display
@@ -102,29 +104,36 @@ void setElbowPosition(Elbow &e1, float elbow) {
 
 // some useful display functions
 
-void displayMessage(string message)
-{
-    // to print custom messages on the display
-
-    cout << message << endl;
+void displayRecordedPositions(Base &b1, Shoulder &s1, Grip &g1, Elbow &e1) { // displays the recorded positions stored in BasePositions[] etc
+    cout << "Base    Shoulder    Grip    Elbow";
+        
+    for(int i=0;i<positionIndex;i++) {
+        cout << b1.BasePositions[i] << "    "  << s1.ShouPositions[i] << "    " << g1.GripPositions[i] << "    " << e1.ElbowPositions[i] << endl;
+    }
 }
 
-void displayRecordedPositions(Base &b1, Shoulder &s1, Grip &g1, Elbow &e1) { // displays the recorded positions stored in BasePositions[] etc
+void displayBasePositions(Base &b1) {
     cout << "Base positions: ";
     for(int j=0;j<positionIndex+1;j++) {
         cout << b1.BasePositions[j] << endl;
     }
+}
 
+void displayShouPositions(Shoulder &s1) {
     cout << "Shoulder positions: ";
     for(int j=0;j<positionIndex+1;j++) {
         cout << s1.ShouPositions[j] << endl;
     }
+}
 
+void displayGripPositions(Grip &g1) {
     cout << "Grip positions: ";
     for(int j=0;j<positionIndex+1;j++) {
         cout << g1.GripPositions[j] << endl;
     }
+}
 
+void displayElbowPositions(Elbow e1) {
     cout << "Elbow positions: ";
     for(int j=0;j<positionIndex+1;j++) {
         cout << e1.ElbowPositions[j] << endl;
@@ -142,42 +151,133 @@ int main() {
     setup(b1,g1,s1,e1);
 
     char c = 'y';
-    char pos_display = 'n'; 
+    int command_no;
+    int max_commands = 7;
 
     float b,s,g,e;
 
     startTaskMessage();
 
-    while(c == 'y') {
+    while((c == 'y') | (c == 'Y')) {
+        cout << "enter command no. " << endl;
+        cout << "1. Set arm position\n";
+        cout << "2. Display current position of arm\n";
+        cout << "3. Set arm to position zero\n";
+        cout << "4. Display recorded positions\n";
+        cout << "5. Display current positions of base/shoulder/grip/arm\n";
+        cout << "6. Display recorded positions of base/shoulder/grip/arm\n";
+        cout << max_commands <<". exit\n";
 
-        cout << "Enter base: ";
-        cin >> b;
+        cin >> command_no;
 
-        cout << "Enter shoulder: ";
-        cin >> s;
+        if((command_no <= 0) | (command_no > max_commands)) {
+            errorMessage();
+            cout << "Invalid command no." << endl;
+        }
 
-        cout << "Enter elbow: ";
-        cin >> e;
+        else if(command_no == 1) {
+            cout << "Enter base: ";
+            cin >> b;
 
-        cout << "Enter grip: ";
-        cin >> g;
+            cout << "Enter shoulder: ";
+            cin >> s;
 
-        setBasePosition(b1,b);
-        setShouPosition(s1,s);
-        setGripPosition(g1,g);
-        setElbowPosition(e1,e);
+            cout << "Enter elbow: ";
+            cin >> e;
 
-        recordArmPosition(b1,g1,s1,e1);
+            cout << "Enter grip: ";
+            cin >> g;
 
-        cout << "Do you wish to see the current position of the arm?" << endl;
-        cin >> pos_display;
+            setBasePosition(b1,b);
+            setShouPosition(s1,s);
+            setGripPosition(g1,g);
+            setElbowPosition(e1,e);
+            recordArmPosition(b1,g1,s1,e1);
+        }
 
-        if((pos_display == 'y') | (pos_display == 'Y')) {
+        else if(command_no == 2) {
             outputPosition(b1,s1,g1,e1);
+        }
+
+        else if(command_no == 3) {
+            setPositionZero(b1,s1,g1,e1);
+            cout << "Position set to zero successfully\n";
+        }
+
+        else if(command_no == 4) {
+            displayRecordedPositions(b1, s1, g1, e1);
+        }
+
+        else if(command_no == 5) {
+            char opt;
+            cout << "press b for base, s for shoulder, g for grip and, e for elbow\n";
+            cin >> opt;
+
+            if((opt == 'b') | (opt == 'B')) {
+                cout << "Base position: ";
+                cout << b1.servoBaseValue << endl;
+            }
+
+            else if((opt == 's') | (opt == 'S')) {
+                cout << "Shoulder position: ";
+                cout << s1.servoShouValue << endl;
+            }
+
+            else if((opt == 'g') | (opt == 'G')) {
+                cout << "Grip position: ";
+                cout << g1.servoGripValue << endl;
+            }
+
+            else if((opt == 'e') | (opt == 'E')) {
+                cout << "Elbow position: ";
+                cout <<e1.servoElbowValue << endl;
+            }
+
+            else {
+                errorMessage();
+                cout << "Invalid option" << endl;
+            }
+        }
+
+        else if(command_no == 6) {
+            char opt;
+            cout << "press b for base, s for shoulder, g for grip and, e for elbow\n";
+            cin >> opt;
+
+            if((opt == 'b') | (opt == 'B')) {
+                displayBasePositions(b1);
+            }
+
+            else if((opt == 'g') | (opt == 'G')) {
+                displayGripPositions(g1);
+            }
+
+            else if((opt == 's') | (opt == 'S')) {
+                displayShouPositions(s1);
+            }
+
+            else if((opt == 'e') | (opt == 'E')) {
+                displayElbowPositions(e1);
+            }
+
+            else {
+                errorMessage();
+                cout << "Invalid option" << endl;
+            }
+        }
+
+        else if(command_no == max_commands) {
+            break;
         }
 
         cout << "Press y if you wish to give more commands else press n" << endl;
         cin >> c;
+
+        if((c!='y')&&(c!='n')&&(c!='Y')&&(c!='N')) {
+            errorMessage();
+            cout << "please enter y or n\n";
+            cin >> c;
+        }
     }
 
     endTaskMessage();

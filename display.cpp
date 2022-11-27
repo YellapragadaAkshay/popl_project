@@ -9,6 +9,12 @@ void offMessage() { // prints a message to indicate that the arm is turning off
     cout << "Arm OFF \a" << endl;
 }
 
+void displayMessage(string message)
+{
+    // to print custom messages on the display
+    cout << message << endl;
+}
+
 void startTaskMessage() { // prints a message to indicate that a task has started executing
     cout << "Task started \a" << endl; // generates a beep along with message
 }
